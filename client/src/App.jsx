@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useState } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import Lenis from '@studio-freight/lenis'
+import './App.css'
 import { LoadingScreen, ProgressBar, Cursor, Navbar, Footer, SocialDock, BackToTop, FloatingCTA, SkeletonLoader } from './components/Shell'
 
 const Home = lazy(() => import('./pages/Home'))
