@@ -1,0 +1,16 @@
+import { useEffect, useState } from 'react'
+import { motion, useScroll } from 'framer-motion'
+import { ArrowUp, Github, Linkedin, Mail, Moon, Sun, X, Menu, ArrowUpRight } from 'lucide-react'
+import { Link, NavLink } from 'react-router-dom'
+
+const nav = [['Work','/projects'],['About','/about'],['Experience','/experience'],['Writing','/blogs'],['Contact','/contact']]
+export function LoadingScreen({done}) { useEffect(()=>{const timer=setTimeout(done,900);return()=>clearTimeout(timer)},[done]); return <motion.div className="loader" initial={{opacity:1}} exit={{opacity:0,transition:{duration:.45}}}><motion.span initial={{scale:.6,rotate:-35}} animate={{scale:1,rotate:0}} transition={{type:'spring'}}>✦</motion.span><small>Initializing atelier</small></motion.div> }
+export function ProgressBar(){const {scrollYProgress}=useScroll();return <motion.div className="progress" style={{scaleX:scrollYProgress}}/>}
+export function Cursor(){const [pos,setPos]=useState({x:-50,y:-50});useEffect(()=>{const move=e=>setPos({x:e.clientX,y:e.clientY});window.addEventListener('pointermove',move);return()=>window.removeEventListener('pointermove',move)},[]);return <i className="cursor" style={{transform:`translate3d(${pos.x}px,${pos.y}px,0)`}}/>}
+export function ThemeToggle(){const [dark,setDark]=useState(()=>localStorage.getItem('theme')!=='light');useEffect(()=>{document.documentElement.dataset.theme=dark?'dark':'light';localStorage.setItem('theme',dark?'dark':'light')},[dark]);return <button className="icon-button" onClick={()=>setDark(!dark)} aria-label="Toggle theme">{dark?<Sun/>:<Moon/>}</button>}
+export function Navbar(){const [open,setOpen]=useState(false);return <header className="nav"><Link className="brand" to="/">✦ <span>akshay.</span></Link><nav className={open?'open':''}>{nav.map(([label,path])=><NavLink key={path} to={path} onClick={()=>setOpen(false)}>{label}</NavLink>)}</nav><div className="nav-actions"><ThemeToggle/><Link className="contact-link" to="/resume">Resume <ArrowUpRight size={14}/></Link><button className="icon-button menu" onClick={()=>setOpen(!open)} aria-label="Menu">{open?<X/>:<Menu/>}</button></div></header>}
+export function Footer(){return <footer><div className="footer-mark">Let’s make something <em>remarkable.</em></div><a className="footer-mail" href="mailto:hello@akshay.design">hello@akshay.design <ArrowUpRight/></a><small>© 2026 AKSHAY / Built with intent</small></footer>}
+export function SocialDock(){return <aside className="social-dock glass"><a href="https://github.com" aria-label="Github"><Github/></a><a href="https://linkedin.com" aria-label="LinkedIn"><Linkedin/></a><a href="mailto:hello@akshay.design" aria-label="Email"><Mail/></a></aside>}
+export function BackToTop(){const [show,setShow]=useState(false);useEffect(()=>{const on=()=>setShow(scrollY>700);addEventListener('scroll',on,{passive:true});return()=>removeEventListener('scroll',on)},[]);return show&&<button className="backtop glass" onClick={()=>scrollTo({top:0,behavior:'smooth'})}><ArrowUp size={16}/></button>}
+export function FloatingCTA(){return <Link to="/contact" className="floating-cta">Start a project <ArrowUpRight size={15}/></Link>}
+export function SkeletonLoader(){return <main className="page"><div className="wrap skeleton"><i/><i/><i/></div></main>}
